@@ -1,0 +1,143 @@
+<html>
+<!--
+FD583F3CB33E4226B56558AF1F59C7C3.root_rel=/../
+//-->
+
+
+<head>
+	<title>!!!!</title>
+	
+</head>
+
+<body id="ffedt" />
+
+
+
+<input type="button" style="color: #00ff00; background-color:#222200" name ="op"  id='idstart' value="connect" onClick="unzips()">				
+<input type="file" id="files" name="files[]" multiple />
+<output id="list"></output>
+
+
+
+<script type="text/javascript" src="zip.js"></script>
+<script type="text/javascript" src="inflate.js"></script>
+<script type="text/javascript" xsrc="../scripts/LPC.js"></script>
+
+
+
+
+<script>
+
+var blob,buffer;
+self.gentries=[];
+function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+	gfiles=files
+
+
+    
+
+      // Closure to capture the file information.
+	  
+	  var reader = new FileReader();
+
+      // Closure to capture the file information.
+	  
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+		  var bb=new BlobBuilder;
+		     buffer= this.result;
+		    bb.append(buffer);
+            blob=bb.getBlob();
+			self.gentries=[];
+			unzips(blob,gentries)
+          
+		  //document.getElementById('txtid').innerText=Base64.encode(this.result);
+        };
+      })(files[0]);
+
+      
+	  reader.readAsArrayBuffer(files[0]);
+	  
+	  	  
+	  
+	  
+	  
+	  
+    
+	
+	
+  }
+  
+self.BlobBuilder=self.BlobBuilder||self.WebKitBlobBuilder || self.MozBlobBuilder;
+self.URL=self.URL||self.webkitURL;
+
+function to_array(arg)
+{
+   if(arg.length==1) return [arg[0]];
+   else return Array.apply(null, arg); 
+}
+
+  if(!self.LPC) LPC={log:function() {console.log.apply(console,to_array(arguments)) }}
+  
+  
+  function unzips(blob,gentries)
+  {
+   
+  function HEXPrevief(blob)
+  {
+  }
+    zip.useWebWorkers=false;//(self.Worker);
+  zip.createReader(new zip.BlobReader(blob), function(reader) {
+
+  // get all entries from the zip
+  reader.getEntries(function(entries) {
+  
+  
+  
+    if (entries.length) {
+	
+	  LPC.log('entries:',entries);
+
+      // get first entry content as text
+      //entries[0].getData(new zip.TextWriter(), function(text) {
+        //      LPC.log(text);
+//for (var k=0;k<entries.length;k++)
+entries.forEach(function(entr){
+
+entr.getData(new zip.BlobWriter(), function(b) {
+              LPC.log(b);
+			  
+			  var breader=new FileReader
+			  breader.onload =  function(e) {    	  
+		      entr.buffer=this.result;
+			  gentries.push(entr);
+			  
+		             	
+        };
+     
+			  breader.readAsArrayBuffer(b);
+
+        // close the zip reader
+        reader.close(function() {
+          // onclose callback
+        });
+
+      }, function(current, total) {
+        // onprogress callback
+        LPC.log('progress:',current, total)
+      });
+    });
+	}
+  });
+}, function(error) {
+     LPC.log(error)
+});
+  
+  
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+</html>

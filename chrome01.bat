@@ -1,0 +1,1 @@
+chrome.exe --allow-file-access-from-files --unlimited-quota-for-files %*
